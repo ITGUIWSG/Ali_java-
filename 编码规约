@@ -1,0 +1,429 @@
+# ***命名风格***
+
+1.【强制】POJO类中布尔类型的变量，都不要加is前缀，否则部分框架解析会引起序列化错误。
+
+​	 反例：定义为基本数据类型Boolean isDeleted的属性，它的方法也是isDeleted()，
+
+RPC框架在反向解析的时候，“误以为”对应的属性名称是deleted，导致属性获取不到，进而抛出异常。
+
+2.【强制】包名统一使用小写，点分隔符之间有且仅有一个自然语义的英语单词。包名统一使用单数形式，但是类名如果有复数含义，类名可以使用复数形式。 
+
+​	正例：应用工具类包名为com.alibaba.ai.util、类名为MessageUtils（此规则参考spring的框架结构）
+
+3.【强制】杜绝完全不规范的缩写，避免望文不知义。
+
+​	 反例：AbstractClass“缩写”命名成AbsClass；condition“缩写”命名成 condi，此类随意缩写严重降低了代码的可阅读性。
+
+4.【推荐】为了达到代码自解释的目标，任何定义编程元素在命名时使用尽量完整单词 组合来表达其意。 
+
+​	正例： 在 JDK 中， 表达 原子更新的类名为：  AtomicReferenceFieldUpdater 
+
+​	反例： 变量 int a int a 的随意命名
+
+5.【推荐】如果模块、接口、类、方法使用了设计模式，在命名时需体现出具体模式。 说明：将设计模式体现在名字中，有利于阅读者快速理解架构设计理念。
+
+​	 正例：public class OrderFactory; public class LoginProxy; public class ResourceObserver;
+
+6.【推荐】接口类中的方法和属性不要加任何修饰符号（public 也不要加），保持代码的简洁性，并加上有效的Javadoc注释。尽量不要在接口里定义变量，如果一定要定义变量，肯定是与接口方法相关，并且是整个应用的基础常量。
+
+​	 正例：接口方法签名void commit(); 接口基础常量String COMPANY = "alibaba"; 
+
+​	反例：接口方法定义public abstract void f();
+
+​	**说明：JDK8中接口允许有默认实现，那么这个default方法，是对所有实现类都有价值的默认实现**
+
+领域模型命名规约
+
+ 1） 数据对象：xxxDO，xxx即为数据表名。
+
+ 2） 数据传输对象：xxxDTO，xxx为业务领域相关的名称。
+
+ 3） 展示对象：xxxVO，xxx一般为网页名称。
+
+ 4） POJO是DO/DTO/BO/VO的统称，禁止命名成xxxPOJO。
+
+
+
+# ***常量定义***
+
+1.【强制】在long或者Long赋值时，数值后使用大写的L，不能是小写的l，小写容易跟数字1混淆，造成误解。 说明：Long a = 2l; 写的是数字的21，还是Long型的2?
+
+2.【推荐】不要使用一个常量类维护所有常量，要按常量功能进行归类，分开维护。 说明：大而全的常量类，杂乱无章，使用查找功能才能定位到修改的常量，不利于理解和维护。
+正例：缓存相关常量放在类CacheConsts下；系统配置相关常量放在类ConfigConsts下。
+
+3.【推荐】常量的复用层次有五层：跨应用共享常量、应用内共享常量、子工程内共享常量、包内共享常量、类内共享常量。
+
+​	 1） 跨应用共享常量：放置在二方库中，通常是client.jar中的`constant`目录下。
+
+​	 2） 应用内共享常量：放置在一方库中，通常是子模块中的`constant`目录下。
+
+​	 反例：易懂变量也要统一定义成应用内共享常量，两位攻城师在两个类中分别定义了表示“是”的变量：
+
+​	类A中：public static final String YES = "yes";
+​	类B中：public static final String YES = "y";
+
+​	A.YES.equals(B.YES)，预期是true，但实际返回为false，导致线上问题。
+​	3） 子工程内部共享常量：即在当前子工程的`constant`目录下。
+
+​	4） 包内共享常量：即在当前包下单独的`constant`目录下。 
+
+​	5） 类内共享常量：直接在类内部private static final定义。
+
+4.【推荐】如果变量值仅在一个固定范围内变化用enum类型来定义。 说明：如果存在名称之外的延伸属性应使用enum类型，下面正例中的数字就是延伸信息，表示一年中的第几个季节。 
+
+```java
+正例： public enum SeasonEnum {
+
+	SPRING(1), SUMMER(2), AUTUMN(3), WINTER(4);
+	private int seq;
+
+	SeasonEnum(int seq)
+
+	{
+		this.seq = seq;
+	}
+
+}
+```
+
+# ***代码格式***
+
+1.【强制】大括号的使用约定。如果是大括号内为空，则简洁地写成{}即可，不需要换行；如果是非空代码块则： 1） 左大括号前不换行。 2） 左大括号后换行。 3） 右大括号前换行。 4） 右大括号后还有else等代码则不换行；表示终止的右大括号后必须换行。
+
+2.【强制】采用4个空格缩进，禁止使用tab字符。
+说明： 如果使用 tab 缩进，必须设置 缩进，必须设置 缩进，必须设置 缩进，必须设置 缩进，必须设置 缩进，必须设置 1个 tab 为 4个空格。 IDEA 设置 tab 为 4个空格时， 请勿勾选 Use tab character ；而在 eclipse 中，必须勾选 insert spaces for tabs 。
+
+```java
+public static void main(String[] args) {
+		// 缩进4个空格
+		String say = "hello";
+		// 运算符的左右必须有一个空格
+		int flag = 0;
+		// 关键词if与括号之间必须有一个空格，括号内的f与左括号，0与右括号不需要空格
+		if (flag == 0) {
+			System.out.println(say);
+		}
+		// 左大括号前加空格且不换行；左大括号后换行
+		if (flag == 1) {
+			System.out.println("world");
+			// 右大括号前换行，右大括号后有else，不用换行
+		} else {
+			System.out.println("ok");
+			// 在右大括号后直接结束，则必须换行
+		}
+	}
+```
+
+3.【强制】注释的双斜线与内容之间有且仅一个空格。
+
+ 正例： 
+
+```java
+// 这是示例注释，请注意在双斜线之后有一个空格
+String ygb = new String();
+```
+
+4.【强制】单行字符数限不超过 120 个，超出需要换行时 个，超出需要换行时 遵循如下原则： 1） 第二行相对一缩进 4个空格，从第三行开始不再继续缩进参考示例。 2） 运算符与下文一起换行。 3） 方法调用的点符号与下文一起换行。 4） 方法调用中的多个参数需要换行时，在逗号后进行。 5） 在括号前不要换行，见反例。
+
+正例：
+
+```java
+StringBuffer sb = new StringBuffer();
+// 超过120个字符的情况下，换行缩进4个空格，点号和方法名称一起换行
+sb.append("zi").append("xin")...
+    .append("huang")...
+	.append("huang")...
+	.append("huang");
+```
+
+反例：
+
+5.【强制】方法参数在定义和传入时，多个参数逗号后边必须加空格。 正例：下例中实参的args1，后边必须要有一个空格。
+
+```java
+method(args1, args2, args3);
+```
+
+6.【推荐】不同逻辑、不同语义、不同业务的代码之间插入一个空行分隔开来以提升可读性。 说明：任何情形，没有必要插入多个空行进行隔开。
+
+# ***OOP规约***
+
+1.【强制】避免通过一个类的对象引用访问此类的静态变量或静态方法，无谓增加编译器解析成本，直接用类名来访问即可。
+
+2.【强制】所有的覆写方法，必须加@Override注解。 说明：getObject()与get0bject()的问题。一个是字母的O，一个是数字的0，加@Override可以准确判断是否覆盖成功。另外，如果在抽象类中对方法签名(**方法名和形参列表共同组成方法签名**。)进行修改，其实现类会马上编译报错。
+
+3.【强制】相同参数类型，相同业务含义，才可以使用Java的可变参数，避免使用Object。 说明：可变参数必须放置在参数列表的最后。（提倡同学们尽量不用可变参数编程）
+
+4.**一方库、二方库、三方库说明：**
+
+| **一方库：** | **本工程中的各模块的相互依赖**                             |
+| ------------ | ---------------------------------------------------------- |
+| **二方库：** | **公司内部的依赖库，一般指公司内部的其他项目发布的jar包**  |
+| **三方库：** | **公司之外的开源库， 比如apache、ibm、google等发布的依赖** |
+
+5.【强制】外部正在调用或者二方库依赖的接口，不允许修改方法签名，避免对接口调用方产生影响。接口过时必须加@Deprecated注解，并清晰地说明采用的新接口或者新服务是什么。
+
+6.【强制】不能使用过时的类或方法。 说明：java.net.URLDecoder 中的方法decode(String encodeStr) 这个方法已经过时，应该使用双参数decode(String source, String encode)。接口提供方既然明确是过时接口，那么有义务同时提供新的接口；作为调用方来说，有义务去考证过时方法的新实现是什么。
+
+7.【强制】Object的equals方法容易抛空指针异常，应使用常量或确定有值的对象来调用equals。 正例："test".equals(object); 反例：object.equals("test"); 说明：推荐使用java.util.Objects#equals（JDK7引入的工具类）
+
+8.【强制】所有的相同类型的包装类对象之间值的比较，全部使用equals方法比较。 说明：对于Integer var = ? 在-128至127范围内的赋值，Integer对象是在IntegerCache.cache产生，会复用已有对象，这个区间内的Integer值可以直接使用==进行判断，但是这个区间之外的所有数据，都会在堆上产生，并不会复用已有对象，这是一个大坑，推荐使用equals方法进行判断。
+
+9.关于基本数据类型与包装数据类型的使用标准如下： 
+
+1） 【强制】所有的POJO类属性必须使用包装数据类型。
+
+2） 【强制】RPC(远程过程调用Remote Procedure Call)方法的返回值和参数必须使用包装数据类型。 
+
+3） 【推荐】所有的局部变量使用基本数据类型。 说明：POJO类属性没有初值是提醒使用者在需要使用时，必须自己显式地进行赋值，任何NPE(空指针异常)问题，或者入库检查，都由使用者来保证。 正例：数据库的查询结果可能是null，因为自动拆箱，用基本数据类型接收有NPE风险。 反例：比如显示成交总额涨跌情况，即正负x%，x为基本数据类型，调用的RPC服务，调用不成功时，返回的是默认值，页面显示为0%，这是不合理的，应该显示成中划线。所以包装数据类型的null值，能够表示额外的信息，如：远程调用失败，异常退出。
+
+10.【强制】定义DO/DTO/VO等POJO类时，不要设定任何属性默认值。 反例：POJO类的gmtCreate默认值为new Date()，但是这个属性在数据提取时并没有置入具体值，在更新其它字段时又附带更新了此字段，导致创建时间被修改成当前时间。
+
+11.【强制】序列化类新增属性时，请不要修改serialVersionUID字段，避免反序列失败；如果完全不兼容升级，避免反序列化混乱，那么请修改serialVersionUID值。 说明：注意serialVersionUID不一致会抛出序列化运行时异常。
+
+12.【强制】构造方法里面禁止加入任何业务逻辑，如果有初始化逻辑，请放在init方法中。
+
+13.【强制】POJO类必须写toString方法。使用IDE中的工具：source> generate toString时，如果继承了另一个POJO类，注意在前面加一下super.toString。 说明：在方法执行抛出异常时，可以直接调用POJO的toString()方法打印其属性值，便于排查问题.
+
+14.【强制】禁止在 POJO类中，同时存在对应属性 xxx的 isXxx()和 getXxx()方法。
+
+​	说明： 框架在调用属性 xxx 的提取方法时，并不能确定哪个一是被优先调用到。
+
+15.【推荐】使用索引访问用String的split方法得到的数组时，需做最后一个分隔符后有无内容的检查，否则会有抛IndexOutOfBoundsException的风险。
+
+16.【推荐】 类内方法定义的顺序依次是：公有方法或保护方法 > 私有方法 > getter/setter方法。 说明：公有方法是类的调用者和维护者最关心的方法，首屏展示最好；保护方法虽然只是子类关心，也可能是“模板设计模式”下的核心方法；而私有方法外部一般不需要特别关心，是一个黑盒实现；因为承载的信息价值较低，所有Service和DAO的getter/setter方法放在类体最后。
+
+17.【推荐】setter方法中，参数名称与类成员变量名称一致，this.成员名 = 参数名。在getter/setter方法中，不要增加业务逻辑，增加排查问题的难度。 反例：
+
+```java
+public Integer getData() {
+	if (condition) {
+		return this.data + 100;
+	} else {
+		return this.data - 100;
+	}
+}
+```
+
+18.【推荐】循环体内，字符串的连接方式，使用StringBuilder的append方法进行扩展。 说明：下例中，反编译出的字节码文件显示每次循环都会new出一个StringBuilder对象，然后进行append操作，最后通过toString方法返回String对象，造成内存资源浪费。
+
+19.【推荐】final可以声明类、成员变量、方法、以及本地变量，下列情况使用final关键字：
+
+1） 不允许被继承的类，如：String类。 
+
+2） 不允许修改引用的域对象。 
+
+3） 不允许被重写的方法，如：POJO类的setter方法。
+4） 不允许运行过程中重新赋值的局部变量。 
+
+5） 避免上下文重复使用一个变量，使用final描述可以强制重新定义一个变量，方便更好地进行重构。
+
+20.【推荐】慎用Object的clone方法来拷贝对象。 说明：对象的clone方法默认是浅拷贝，若想实现深拷贝需要重写clone方法实现域对象的深度遍历式拷贝。
+
+21.【推荐】类成员与方法访问控制从严：
+
+1） 如果不允许外部直接通过new来创建对象，那么构造方法必须是private。 2） 工具类不允许有public或default构造方法。 3） 类非static成员变量并且与子类共享，必须是protected。 4） 类非static成员变量并且仅在本类使用，必须是private。 5） 类static成员变量如果仅在本类使用，必须是private。 6） 若是static成员变量，考虑是否为final。 7） 类成员方法只供类内部调用，必须是private。 8） 类成员方法只对继承类公开，那么限制为protected。 说明：任何类、方法、参数、变量，严控访问范围。过于宽泛的访问范围，不利于模块解耦。思考：如果是一个private的方法，想删除就删除，可是一个public的service成员方法或成员变量，删除一下，不得手心冒点汗吗？变量像自己的小孩，尽量在自己的视线内，变量作用域太大，无限制的到处跑，那么你会担心的。
+
+# ***集合处理***
+
+1.【强制】关于hashCode和equals的处理，遵循如下规则： 
+
+​	1） 只要重写equals，就必须重写hashCode。 
+
+​	2） 因为Set存储的是不重复的对象，依据hashCode和equals进行判断，所以Set存储的对象必须重写这两个方法。 
+
+​	3） 如果自定义对象作为Map的键，那么必须重写hashCode和equals。 说明：String重写了hashCode和equals方法，所以我们可以非常愉快地使用String对象作为key来使用。
+
+2.【强制】 ArrayList的subList结果不可强转成ArrayList，否则会抛出ClassCastException异常，即java.util.RandomAccessSubList cannot be cast to java.util.ArrayList。 说明：subList 返回的是 ArrayList 的内部类 SubList，并不是 ArrayList而是ArrayList 的一个视图，对于SubList子列表的所有操作最终会反映到原列表上。
+
+3.【强制】使用集合转数组的方法，必须使用集合的toArray(T[] array)，传入的是类型完全一样的数组，大小就是list.size()。
+说明：使用toArray带参方法，入参分配的数组空间不够大时，toArray方法内部将重新分配内存空间，并返回新数组地址；如果数组元素个数大于实际所需，下标为[ list.size() ]的数组元素将被置为null，其它数组元素保持原值，因此最好将方法入参数组大小定义与集合元素个数一致。
+
+ 正例：
+
+```java
+List<String> list = new ArrayList<String>(2);
+list.add("guan");
+list.add("bao");
+String[] array = new String[list.size()];
+array = list.toArray(array);
+```
+
+反例：直接使用toArray无参方法存在问题，此方法返回值只能是Object[]类，若强转其它类型数组将出现ClassCastException错误。
+
+4.【强制】使用工具类Arrays.asList()把数组转换成集合时，不能使用其修改集合相关的方法，它的add/remove/clear方法会抛出UnsupportedOperationException异常。 说明：asList的返回对象是一个Arrays内部类，并没有实现集合的修改方法。Arrays.asList体现的是适配器模式，只是转换接口，后台的数据仍是数组。 String[] str = new String[] { "you", "wu" }; List list = Arrays.asList(str); 第一种情况：list.add("yangguanbao"); 运行时异常。 第二种情况：str[0] = "gujin"; 那么list.get(0)也会随之修改。
+
+5.【强制】泛型通配符<? extends T>来接收返回的数据，此写法的泛型集合不能使用add方法，而<? super T>不能使用get方法，作为接口调用赋值时易出错。 说明：扩展说一下PECS(Producer Extends Consumer Super)原则：第一、频繁往外读取内容的，适合用<? extends T>。第二、经常往里插入的，适合用<? super T>。
+
+6.【强制】不要在foreach循环里进行元素的remove/add操作。remove元素请使用Iterator方式，如果并发操作，需要对Iterator对象加锁。
+
+```java
+// 正例：
+List<String> list = new ArrayList<>();
+list.add("1");
+list.add("2");
+Iterator<String> iterator = list.iterator();
+while (iterator.hasNext()) {
+    String item = iterator.next();
+    if (删除元素的条件) {
+    iterator.remove();
+    }
+}
+// 反例：
+for (String item : list) {
+    if ("1".equals(item)) {
+  	  list.remove(item);
+    }
+}
+// 原因解释如下
+publicEnext(){
+        checkForComodification();
+        try{
+            Enext=get(cursor);
+            lastRet=cursor++;
+            returnnext;
+
+        }catch(IndexOutOfBoundsExceptione){
+            checkForComodification();
+            thrownewNoSuchElementException();
+        }
+
+}
+finalvoidcheckForComodification(){
+    if(modCount!=expectedModCount)
+        thrownewConcurrentModificationException();
+	}
+}
+/**首先java的foreach循环其实就是根据list对象创建一个Iterator迭代对象，用这个迭代对象来遍历list，相当于list对象中元素的遍历托管给了Iterator，你如果要对list进行增删操作，都必须经过Iterator，否则Iterator遍历时会乱，所以直接对list进行删除时，Iterator会抛出ConcurrentModificationException异常*/
+
+//其实，每次foreach迭代的时候都有两部操作：
+
+iterator.hasNext()  //判断是否有下个元素
+item = iterator.next()  //下个元素是什么，并赋值给上面例子中的item变量
+ /**这时候你会发现这个异常是在next方法的checkForComodification中抛出的，抛出原因是modCount != expectedModCount
+
+modCount是指这个list对象从new出来到现在被修改次数，当调用List的add或者remove方法的时候，这个modCount都会自动增减;
+expectedModCount是指Iterator现在期望这个list被修改的次数是多少次。
+iterator创建的时候modCount被赋值给了expectedModCount，但是调用list的add和remove方法的时候不会同时自动增减expectedModCount，这样就导致两个count不相等，从而抛出异常。
+
+如果想让其不抛出异常，一个办法是让iterator在调用hasNext()方法的时候返回false，这样就不会进到next()方法里了。这里cursor是指当前遍历时下一个元素的索引号。比如删除倒数第二个元素的时候，cursor指向最后一个元素的，而此时删掉了倒数第二个元素后，cursor和size()正好相等了，所以hasNext()返回false，遍历结束，这样就成功的删除了倒数第二个元素了。
+
+破除迷信，foreach循环遍历的时候不能删除元素不是绝对，倒数第二个元素是可以安全删除的~~（当然以上的思路都是建立在list没有被多线程共享的情况下）*/
+
+```
+
+7【强制】 在JDK7版本及以上，Comparator实现类要满足如下三个条件，不然Arrays.sort，Collections.sort会报IllegalArgumentException异常。 说明：三个条件如下 1） x，y的比较结果和y，x的比较结果相反。 2） x>y，y>z，则x>z。 3） x=y，则x，z比较结果和y，z比较结果相同。 反例：下例中没有处理相等的情况，实际使用中可能会出现异常
+
+```java
+new Comparator<Student>() {
+	@Override
+    public int compare(Student o1, Student o2) {
+   	 return o1.getId() > o2.getId() ? 1 : -1;
+    }
+};
+
+```
+
+8【推荐】集合泛型定义时，在JDK7及以上，使用diamond语法或全省略。
+说明：菱形泛型，即diamond，直接使用<>来指代前边已经指定的类型。
+
+```java
+// 正例：
+// <> diamond方式
+HashMap<String, String> userCache = new HashMap<>(16);
+// 全省略方式
+ArrayList<User> users = new ArrayList(10);
+
+```
+
+9.【推荐】集合初始化时，指定集合初始值大小。 说明：HashMap使用HashMap(int initialCapacity) 初始化。 正例：initialCapacity = (需要存储的元素个数 / 负载因子) + 1。注意 负载因子（即loader factor）默认为 0.75，如果 暂时无法 确定 初始值大小，请设置为 16（即默认值）。 反例： HashMap需要 放置 1024个元素， 由于 没有设置容量 初始大小，随着元素不断增加容 量 7次被迫扩大， resize需要重建 hash表，严重影响性能。 
+
+10.【推荐】使用entrySet遍历Map类集合KV，而不是keySet方式进行遍历。 说明：keySet其实是遍历了2次，一次是转为Iterator对象，另一次是从hashMap中取出key所对应的value。而entrySet只是遍历了一次就把key和value都放到了entry中，效率更高。如果是JDK8，使用Map.foreach方法。 正例：values()返回的是V值集合，是一个list集合对象；keySet()返回的是K值集合，是一个Set集合对象；entrySet()返回的是K-V值组合集合。
+
+11.【推荐】高度注意Map类集合K/V能不能存储null值的情况，如下表格：
+
+| 集合类            | Key          | Value        | Super       | 说明                   |
+| ----------------- | ------------ | ------------ | ----------- | ---------------------- |
+| Hashtable         | 不允许为null | 不允许为null | Dictionary  | 线程安全               |
+| ConcurrentHashMap | 不允许为null | 不允许为null | AbstractMap | 锁分段技术（JDK8:CAS） |
+| TreeMap           | 不允许为null | 允许为null   | AbstractMap | 线程不安全             |
+| HashMap           | 允许为null   | 允许为null   | AbstractMap | 线程不安全             |
+
+反例： 由于HashMap的干扰，很多人认为ConcurrentHashMap是可以置入null值，而事实上，存储null值时会抛出NPE异常。
+
+12.【参考】合理利用好集合的有序性(sort)和稳定性(order)，避免集合的无序性(unsort)和不稳定性(unorder)带来的负面影响。 说明：有序性是指遍历的结果是按某种比较规则依次排列的。稳定性指集合每次遍历的元素次序是一定的。如：ArrayList是order/unsort；HashMap是unorder/unsort；TreeSet是order/sort。
+
+13.【参考】利用Set元素唯一的特性，可以快速对一个集合进行去重操作，避免使用List的contains方法进行遍历、对比、去重操作。
+
+# *并发处理*
+
+【强制】获取单例对象需要保证线程安全，其中的方法也要保证线程安全。 说明：资源驱动类、工具类、单例工厂类都需要注意。
+
+2.【强制】创建线程或线程池时请指定有意义的线程名称，方便出错时回溯。 正例：
+
+```java
+public class TimerTaskThread extends Thread {
+    public TimerTaskThread() {
+    super.setName("TimerTaskThread");
+    ...
+    }
+}
+
+```
+
+【强制】线程资源必须通过线程池提供，不允许在应用中自行显式创建线程。 说明：使用线程池的好处是减少在创建和销毁线程上所消耗的时间以及系统资源的开销，解决资源不足的问题。如果不使用线程池，有可能造成系统创建大量同类线程而导致消耗完内存或者“过度切换”的问题。
+
+4.【强制】线程池不允许使用  Executors去创建，而是通过 去创建，而是通过 ThreadPoolExecutor ThreadPoolExecutor的方式，这样 的处理方式让写同学更加明确线程池运行规则，避资源耗尽风险。 说明：  ExecutorsExecutors返回的线程池对象 返回的线程池对象 的弊端 如下 ：
+
+1）FixedThreadPool 和 SingleThreadPoolPool Pool: 允许的请求队列长度为 Integer.MAX_VALUE，可 能会堆积大量的请求，从而导致 OOM。
+
+2）CachedThreadPool和 ScheduledThreadPool : 允许的创建线程数量为 Integer.MAX_VALUE，可能会创建大量的线程，从而导致 OOM。
+
+5.【强制】SimpleDateFormat 是线程不安全的类，一般不要定义为static变量，如果定义为static，必须加锁，或者使用DateUtils工具类。 正例：注意线程安全，使用DateUtils。亦推荐如下处理：
+
+```java
+private static final ThreadLocal<DateFormat> df = new ThreadLocal<DateFormat>() {
+    @Override
+    protected DateFormat initialValue() {
+        return new SimpleDateFormat("yyyy-MM-dd");
+    }
+};
+
+```
+
+说明：如果是JDK8的应用，可以使用Instant代替Date，LocalDateTime代替Calendar，DateTimeFormatter代替SimpleDateFormat，官方给出的解释：simple beautiful strong immutable thread-safe。
+
+6.【强制】高并发时，同步调用应该去考量锁的性能损耗。能用无锁数据结构，就不要用锁；能锁区块，就不要锁整个方法体；能用对象锁，就不要用类锁。 说明：尽可能使加锁的代码块工作量尽可能的小，避免在锁代码块中调用RPC(Remote Procedure Call)方法。
+
+7.【强制】对多个资源、数据库表、对象同时加锁时，需要保持一致的加锁顺序，否则可能会造成死锁。 说明：线程一需要对表A、B、C依次全部加锁后才可以进行更新操作，那么线程二的加锁顺序也必须是A、B、C，否则可能出现死锁。
+
+8.【强制】并发修改同一记录时，避免更新丢失，需要加锁。要么在应用层加锁，要么在缓存加锁，要么在数据库层使用乐观锁，使用version作为更新依据。 说明：如果每次访问冲突概率小于20%，推荐使用乐观锁，否则使用悲观锁。乐观锁的重试次数不得小于3次。
+
+9.【强制】多线程并行处理定时任务时，Timer运行多个TimeTask时，只要其中之一没有捕获抛出的异常，其它任务便会自动终止运行，使用ScheduledExecutorService则没有这个问题。
+
+10.【推荐】使用CountDownLatch进行异步转同步操作，每个线程退出前必须调用countDown方法，线程执行代码注意catch异常，确保countDown方法被执行到，避免主线程无法执行至await方法，直到超时才返回结果。 说明：注意，子线程抛出异常堆栈，不能在主线程try-catch到。
+
+11.【推荐】避免Random实例被多线程使用，虽然共享该实例是线程安全的，但会因竞争同一seed 导致的性能下降。
+说明：Random实例包括java.util.Random 的实例或者 Math.random()的方式。 正例：在JDK7之后，可以直接使用API ThreadLocalRandom，而在 JDK7之前，需要编码保证每个线程持有一个实例。
+
+12.【推荐】在并发场景下，通过双重检查锁（double-checked locking）实现延迟初始化的优化问题隐患(可参考 The "Double-Checked Locking is Broken" Declaration)，推荐解决方案中较为简单一种（适用于JDK5及以上版本），将目标属性声明为 volatile型。 反例：
+class LazyInitDemo {
+private Helper helper = null;
+public Helper getHelper() {
+if (helper == null) synchronized(this) {
+if (helper == null)
+helper = new Helper();
+}
+return helper;
+}
+// other methods and fields...
+}
+
+13.【参考】volatile解决多线程内存不可见问题。对于一写多读，是可以解决变量同步问题，但是如果多写，同样无法解决线程安全问题。如果是count++操作，使用如下类实现：AtomicInteger count = new AtomicInteger(); count.addAndGet(1); 如果是JDK8，推荐使用LongAdder对象，比AtomicLong性能更好（减少乐观锁的重试次数）。
+
+14.【参考】 HashMap在容量不够进行resize时由于高并发可能出现死链，导致CPU飙升，在开发过程中可以使用其它数据结构或加锁来规避此风险。
+
+15.【参考】ThreadLocal无法解决共享对象的更新问题，ThreadLocal对象建议使用static修饰。这个变量是针对一个线程内所有操作共享的，所以设置为静态变量，所有此类实例共享此静态变量 ，也就是说在类第一次被使用时装载，只分配一块存储空间，所有此类的对象(只要是这个线程内定义的)都可以操控这个变量。
+
+# *控制语句*
+
