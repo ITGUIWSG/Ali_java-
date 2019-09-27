@@ -1,0 +1,41 @@
+npm 是 JavaScript 世界的包管理工具,并且是 Node.js 平台的默认包管理工具。通过 npm 可以安装、共享、分发代码,管理项目依赖关系
+Apache Maven是一个软件项目管理和综合工具。基于项目对象模型（POM）的概念，Maven可以从一个中心资料片管理项目构建，报告和文件。
+Maven是一个项目管理和综合工具。Maven提供了开发人员构建一个完整的生命周期框架。开发团队可以自动完成项目的基础工具建设，Maven使用标准的目录结构和默认构建生命周期。
+Redis是一个开源的使用ANSI C语言编写、支持网络、可基于内存亦可持久化的日志型、Key-Value数据库，并提供多种语言的API
+Sentinel：把流量作为切入点，从流量控制、熔断降级、系统负载保护等多个维度保护服务的稳定性。
+Nacos：一个更易于构建云原生应用的动态服务发现、配置管理和服务管理平台。融合了服务注册发现中心、配置中心、服务管理等功能
+Node.js 就是运行在服务端的 JavaScript。是一个基于Chrome JavaScript 运行时建立的一个平台。是一个事件驱动I/O服务端JavaScript环境，基于Google的V8引擎，V8引擎执行Javascript的速度非常快，性能非常好。
+Lombok Plugin是一种Java™实用工具，可用来帮助开发人员消除Java的冗长代码，尤其是对于简单的Java对象（POJO）。
+它通过注释实现这一目的。通过在开发环境中实现Lombok，开发人员可以节省构建诸如hashCode()和equals()这样的方法以及以往用来分类各种accessor和mutator的大量时间。
+WebStorm 是jetbrains公司旗下一款JavaScript 开发工具。目前已经被广大中国JS开发者誉为“Web前端开发神器”、“最强大的HTML5编辑器”、“最智能的JavaScript IDE”等。与IntelliJ IDEA同源，继承了IntelliJ IDEA强大的JS部分的功能。
+一：swagger是什么？
+1、是一款让你更好的书写API文档的规范且完整框架。
+
+2、提供描述、生产、消费和可视化RESTful Web Service。
+
+3、是由庞大工具集合支撑的形式化规范。这个集合涵盖了从终端用户接口、底层代码库到商业API管理的方方面面。
+Feign是一种声明式、模板化的HTTP客户端。在Spring Cloud中使用Feign, 我们可以做到使用HTTP请求远程服务时能与调用本地方法一样的编码体验,
+开发者完全感知不到这是远程方法,更感知不到这是个HTTP请求。
+熔断机制 Hystrix：
+Hystrix的设计原则是什么？
+	资源隔离（线程池隔离和信号量隔离）机制：限制调用分布式服务的资源使用，某一个调用的服务出现问题不会影响其它服务调用。
+	限流机制：限流机制主要是提前对各个类型的请求设置最高的QPS阈值，若高于设置的阈值则对该请求直接返回，不再调用后续资源。
+	熔断机制：当失败率达到阀值自动触发降级（如因网络故障、超时造成的失败率真高），熔断器触发的快速失败会进行快速恢复。
+	降级机制：超时降级、资源不足时（线程或信号量）降级 、运行异常降级等，降级后可以配合降级接口返回托底数据。
+	缓存支持：提供了请求缓存、请求合并实现
+	通过近实时的统计/监控/报警功能，来提高故障发现的速度
+	通过近实时的属性和配置热修改功能，来提高故障处理和恢复的速度
+Nginx (engine x) 是一个高性能的HTTP和反向代理web服务器，同时也提供了IMAP/POP3/SMTP服务。
+Nginx是一款轻量级的Web 服务器/反向代理服务器及电子邮件（IMAP/POP3）代理服务器，在BSD-like 协议下发行。其特点是占有内存少，并发能力强，事实上nginx的并发能力确实在同类型的网页服务器中表现较好，中国大陆使用nginx网站用户有：百度、京东、新浪、网易、腾讯、淘宝等。
+1. POJO（Plain Ordinary Java Object）: 在本手册中，POJO专指只有setter / getter / toString的简单类，包括DO/DTO/BO/VO等。
+2. GAV（GroupId、ArtifactctId、Version）: Maven坐标，是用来唯一标识jar包。
+3. OOP（Object Oriented Programming）: 本手册泛指类、对象的编程处理方式。
+4. ORM（Object Relation Mapping）: 对象关系映射，对象领域模型与底层数据之间的转换，本文泛指iBATIS, mybatis等框架。 
+5. NPE（java.lang.NullPointerException）: 空指针异常。 
+6. SOA（Service-Oriented Architecture）: 面向服务架构，它可以根据需求通过网络对松散耦合的粗粒度应用组件进行分布式部署、组合和使用，有利于提升组件可重用性，可维护性。 
+7. IDE（Integrated Development Environment）: 用于提供程序开发环境的应用程序，一般包括代码编辑器、编译器、调试器和图形用户界面等工具，本《手册》泛指IntelliJ IDEA和eclipse。 
+8. OOM（Out Of Memory）: 源于java.lang.OutOfMemoryError，当JVM没有足够的内存来为对象分配空间并且垃圾回收器也无法回收空间时，系统出现的严重状况。
+9. 一方库: 本工程内部子项目模块依赖的库（jar包）。 
+10. 二方库: 公司内部发布到中央仓库，可供公司内部其它应用依赖的库（jar包）。
+11. 三方库: 公司之外的开源库（jar包）。
+12.Wiki是一种在网络上开放且可供多人协同创作的超文本系统，由沃德·坎宁安于1995年首先开发，这种超文本系统支持面向社群的协作式写作，同时也包括一组支持这种写作。
